@@ -2,9 +2,10 @@
 
 use strict;
 use warnings;
-
+my $start = 1;
+$SIG{USR2} = sub { $start = 0};
 $SIG{USR1} = sub {
-	warn "SIGNAL CATCHED!!!!";
+	warn "SIGNAL CATCHED" . "\n";
 	ram_clean();
 };
 
@@ -18,18 +19,22 @@ sub ram_clean {
 	my $ram_percentage = 1 - ($ram[1] / $ram[0]);
 	my $flag;
 	if ($ram_percentage > 0.9) {
-		my $user = `whoami`;
-		my $ps_output = `ps axo pid,rss,user | sort -k2,2 -n -r | grep vlad | head -n 1`;
-		$ps_output =~ /\s?(\d{4})/;
-		$flag = system("kill -KILL $1");
-		unless ($flag) {
-			print "Success"."\n";
+		my $user = substr(`whoami`, 0, 7);
+		chomp $user;
+		my $ps_output = `ps axo pid,rss,user,comm | sort -k2,2 -n -r | grep $user | grep -v "nautilus" | grep -v "gnome" | head -n 1`;
+		print $ps_output . "\n";
+		$ps_output =~ /(\d+)\s/;
+		if ($1 != $$) {
+			$flag = system("kill -KILL $1");
+			unless ($flag) {
+				print "Success"."\n";
+			}
 		}
 	}
 }
 
 
-while (1) {
+while ($start) {
 	ram_clean();
 	sleep 1;
 }
