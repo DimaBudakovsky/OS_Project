@@ -5,7 +5,7 @@ Description=RAM control service
 Type=simple
 User=root
 Group=root
-ExecStart=/usr/lib/ram_control/service.sh
+ExecStart=/usr/bin/perl /usr/lib/ram_control/ram_control.pl /usr/local/scripts/
 Restart=always
 
 [Install]
