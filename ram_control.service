@@ -1,0 +1,12 @@
+[Unit]
+Description=RAM control service
+
+[Service]
+Type=simple
+User=root
+Group=root
+ExecStart=/usr/lib/ram_control/service.sh
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
