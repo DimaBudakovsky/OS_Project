@@ -3,8 +3,8 @@ Description=RAM control service
 
 [Service]
 Type=simple
-User=root
-Group=root
+User=$USER
+Group=$USER
 ExecStart=/usr/bin/perl /usr/lib/ram_control/ram_control.pl /usr/local/scripts/
 Restart=always
 
