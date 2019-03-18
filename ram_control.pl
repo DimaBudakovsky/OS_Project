@@ -22,7 +22,6 @@ sub ram_clean {
 		my $user = substr(`whoami`, 0, 7);
 		chomp $user;
 		my $ps_output = `ps axo pid,rss,user,comm | sort -k2,2 -n -r | grep $user | grep -v "nautilus" | grep -v "gnome" | head -n 1`;
-		print $ps_output . "\n";
 		$ps_output =~ /(\d+)\s/;
 		if ($1 != $$) {
 			$flag = system("kill -KILL $1");
